@@ -1,0 +1,19 @@
+<Package>
+<!-- #00000000; /Users/outracks/buildAgent1/work/70085b5132c8a434/StdLib/Core/UnoCore/Source/Uno/IO/CppXliStream.cpp.uxl; -->
+<Extensions Backend="CPlusPlus" Condition="iOS">
+	<Type Name="SQLiteImpl">
+		<Require Source.Include="sqlite3.h" />
+	    <Require iOS.Build.Framework="libsqlite3.dylib" />
+	    <Method Signature="OpenImpl(string):object">
+	        <Body>
+	            <![CDATA[
+	            sqlite3 *sqlite3Database;
+	            BOOL openDatabaseResult = sqlite3_open(uStringToCStr(filename_), &sqlite3Database);
+	            return nil;
+	            ]]>
+	        </Body>
+	    </Method>
+	</Type>
+
+</Extensions>
+</Package>
