@@ -9,10 +9,8 @@ using Uno.Collections;
 
 using Uno.Compiler.ExportTargetInterop;
 
-[ExportCondition("iOS")]
-[TargetSpecificType]
 [TargetSpecificImplementation]
-public static class SQLiteImpl {
+public extern(iOS) static class SQLiteImpl {
 
 	static Dictionary<string,ObjC.ID> dbs = new Dictionary<string,ObjC.ID>();
 
@@ -32,5 +30,4 @@ public static class SQLiteImpl {
 		var db = dbs[handler];
 		ExecImplNative(db, statement);
 	}
-
 }
