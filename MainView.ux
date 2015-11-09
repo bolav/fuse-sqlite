@@ -1,3 +1,8 @@
 <App Theme="Basic">
+	<JavaScript>
+		var db = require('FuseJSX/SQLite');
+		var h = db.open("file.sqlite");
+		db.execute(h, "create table if not exists studentsDetail (regno integer primary key, name text, department text, year text)");
+	</JavaScript>
 </App>
 

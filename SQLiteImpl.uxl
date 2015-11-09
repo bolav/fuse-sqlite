@@ -1,17 +1,32 @@
 <Package>
-<!-- #00000000; /Users/outracks/buildAgent1/work/70085b5132c8a434/StdLib/Core/UnoCore/Source/Uno/IO/CppXliStream.cpp.uxl; -->
 <Extensions Backend="CPlusPlus" Condition="iOS">
 	<Type Name="SQLiteImpl">
 		<Require Source.Include="sqlite3.h" />
-	    <Require iOS.Build.Framework="libsqlite3.dylib" />
-	    <Method Signature="OpenImpl(string):object">
+		<Require Build.LinkLibrary="sqlite3" />
+	    <Method Signature="OpenImplNative(string):ObjC.ID">
 	        <Body>
 	            <![CDATA[
 	            sqlite3 *sqlite3Database;
-	            BOOL openDatabaseResult = sqlite3_open(uStringToCStr(filename_), &sqlite3Database);
-	            return nil;
+	            BOOL openDatabaseResult = sqlite3_open(uStringToCStr($0), &sqlite3Database);
+	            return (::id)sqlite3Database;
 	            ]]>
 	        </Body>
+	    </Method>
+	    <Method Signature="ExecImplNative(ObjC.ID,string)">
+	    	<Body>
+	    		<![CDATA[
+	    		BOOL isSuccess = YES;
+	    		char *errMsg;
+
+	    		if (sqlite3_exec((sqlite3 *)$0, uStringToCStr($1), NULL, NULL, &errMsg) 
+	    		   != SQLITE_OK)
+	    		{
+	    		    isSuccess = NO;
+	    		    // NSLog(@"Failed to create table");
+	    		}
+	    		return;
+	    		]]>
+	    	</Body>
 	    </Method>
 	</Type>
 
