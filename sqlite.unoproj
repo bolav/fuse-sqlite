@@ -22,7 +22,8 @@
         "FuseCore",
         "Uno.Collections",
         "Uno.Geometry",
-        "ObjC"
+        "ObjC",
+        "Android"
   ],
   "Includes": [
     "*"

@@ -7,6 +7,8 @@ using Uno.Compiler.ExportTargetInterop;
 public extern(Android) static class SQLiteImpl {
 
 	public static object OpenImpl(string filename) {
+		var db = Android.android.database.sqlite.SQLiteDatabase.openOrCreateDatabase(filename, null);
+		debug_log db;
 		return filename;
 	}
 
