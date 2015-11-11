@@ -1,6 +1,8 @@
 <Package>
 <Extensions Backend="CPlusPlus" Condition="iOS">
 	<Type Name="SQLiteImpl">
+		<Set Source.FileExtension="mm" />
+        <Require ObjC.Class.Include="#include &lt;@{iOS.Foundation.NSString:Include}&gt;" />
 		<Require Source.Include="sqlite3.h" />
 		<Require Build.LinkLibrary="sqlite3" />
 	    <Method Signature="OpenImplNative(string):ObjC.ID">
@@ -28,6 +30,60 @@
 	    		]]>
 	    	</Body>
 	    </Method>
+	    <Method Signature="CloseImplNative(ObjC.ID)">
+	    	<Body>
+	    		<![CDATA[
+	    		sqlite3_close((sqlite3 *)$0);
+	    		return;
+	    		]]>
+	    	</Body>
+	    </Method>
+	    <Method Signature="QueryImplNative(ObjC.ID,string):iOS.Foundation.NSMutableArray">
+	    	<Body>
+	    		<![CDATA[
+    sqlite3_stmt *compiledStatement;
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    NSMutableArray *columnNames = [[NSMutableArray alloc] init];
+
+    // Load all data from database to memory.
+    BOOL prepareStatementResult = sqlite3_prepare_v2((sqlite3 *)$0, uStringToCStr($1), -1, &compiledStatement, NULL);
+    if(prepareStatementResult != SQLITE_OK) {
+        return nil;
+    }
+    while(sqlite3_step(compiledStatement) == SQLITE_ROW) {
+    	// Initialize the mutable array that will contain the data of a fetched row.
+        NSMutableDictionary *row = [[NSMutableDictionary alloc] init];
+
+        // Get the total number of columns.
+        int totalColumns = sqlite3_column_count(compiledStatement);
+
+        // Go through all columns and fetch each column data.
+        for (int i=0; i<totalColumns; i++){
+            // Convert the column data to text (characters).
+            char *dbDataAsChars;
+
+            // Keep the current column name.
+            if (columnNames.count != totalColumns) {
+                dbDataAsChars = (char *)sqlite3_column_name(compiledStatement, i);
+                [columnNames addObject:[NSString stringWithUTF8String:dbDataAsChars]];
+            }
+
+            dbDataAsChars = (char *)sqlite3_column_text(compiledStatement, i);
+            // If there are contents in the currenct column (field) then add them to the current row array.
+            if (dbDataAsChars != NULL) {
+                // Convert the characters to string.
+                [row setObject:[NSString stringWithUTF8String:dbDataAsChars] forKey:[columnNames objectAtIndex:i]];
+            }
+
+        }
+        [result addObject:row];
+    }
+    [columnNames release];
+    return (@{iOS.Foundation.NSMutableArray})uObjC::Lifetime::GetUnoObject(result, @{iOS.Foundation.NSMutableArray:TypeOf});
+	    		]]>
+	    	</Body>
+	    </Method>
+
 	</Type>
 
 </Extensions>

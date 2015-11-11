@@ -18,6 +18,7 @@ public class SQLite {
 	  	new NativeFunction("open", (NativeCallback)Open),
 	  	new NativeFunction("prepare", (NativeCallback)Prepare),
 	  	new NativeFunction("execute", (NativeCallback)Execute),
+	  	new NativeFunction("query", (NativeCallback)Query),
 	  );
 	}
 
@@ -32,16 +33,23 @@ public class SQLite {
 		// return filename;
 	}
 
-	static object Prepare(Context c, object [] args) {
+	static object Prepare(Context c, object[] args) {
 		return null;
 	}
 
-	static object Execute(Context c, object [] args) {
+	static object Execute(Context c, object[] args) {
 		var handler = args[0] as string;
 		var statement = args[1] as string;
 		debug_log "Executing " + statement + " on " + handler;
 		SQLiteImpl.ExecImpl(handler, statement);
 		return null;
+	}
+
+	static object Query(Context c, object[] args) {
+		var handler = args[0] as string;
+		var statement = args[1] as string;
+		SQLiteImpl.QueryImpl(handler, statement);
+		return null;	
 	}
 
 

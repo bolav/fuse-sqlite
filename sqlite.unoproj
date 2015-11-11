@@ -1,4 +1,5 @@
 {
+  "Name":"FuseSQLiteLib",
   "RootNamespace":"",
   "Packages": [
         "Fuse.Animations",
@@ -23,7 +24,8 @@
         "Uno.Collections",
         "Uno.Geometry",
         "ObjC",
-        "Android"
+        "Android",
+        "Experimental.iOS"
   ],
   "Includes": [
     "*"

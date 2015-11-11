@@ -2,7 +2,9 @@
 	<JavaScript>
 		var db = require('FuseJSX/SQLite');
 		var h = db.open("file.sqlite");
-		db.execute(h, "create table if not exists studentsDetail (regno integer primary key, name text, department text, year text)");
+		db.execute(h, "create table if not exists ids (id integer primary key)");
+		db.execute(h, "insert into ids values (1)");
+		db.query(h, "select * from ids");
 	</JavaScript>
 </App>
 

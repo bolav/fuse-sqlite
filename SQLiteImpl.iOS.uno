@@ -8,6 +8,7 @@ using Uno;
 using Uno.Collections;
 
 using Uno.Compiler.ExportTargetInterop;
+// http://www.appcoda.com/sqlite-database-ios-app-tutorial/
 
 [TargetSpecificImplementation]
 public extern(iOS) static class SQLiteImpl {
@@ -29,5 +30,15 @@ public extern(iOS) static class SQLiteImpl {
 	public static void ExecImpl(string handler, string statement) {
 		var db = dbs[handler];
 		ExecImplNative(db, statement);
+	}
+
+	[TargetSpecificImplementation]
+	public static extern void CloseImplNative(ObjC.ID db);
+	[TargetSpecificImplementation]
+	public static extern iOS.Foundation.NSMutableArray QueryImplNative(ObjC.ID db, string statement);
+
+	public static void QueryImpl(string handler, string statement) {
+		var db = dbs[handler];
+		var r = QueryImplNative(db, statement);
 	}
 }
