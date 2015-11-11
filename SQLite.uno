@@ -45,11 +45,24 @@ public class SQLite {
 		return null;
 	}
 
-	static object Query(Context c, object[] args) {
+	static object Query(Context context, object[] args) {
 		var handler = args[0] as string;
 		var statement = args[1] as string;
-		SQLiteImpl.QueryImpl(handler, statement);
-		return null;	
+		var result = SQLiteImpl.QueryImpl(handler, statement);
+
+		int i = 0;
+		var obj = context.NewObject();
+		foreach (var row in result) {
+			var r_obj = context.NewObject();
+			foreach (var pair in row) {
+				string key = pair.Key as string;
+				string val = pair.Value as string;
+				r_obj[key] = val;
+			}
+			obj[i.ToString()] = r_obj;
+			i++;
+		}
+		return obj;
 	}
 
 
