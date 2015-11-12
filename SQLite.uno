@@ -7,6 +7,7 @@ public class SQLite {
 
 	static SQLite()
 	{
+		debug_log "Static ctor";
 		Register("FuseJSX/SQLite", CreateModule());
 
 	}
@@ -34,7 +35,7 @@ public class SQLite {
 	static object Close(Context c, object[] args)
 	{
 		var handler = args[0] as string;
-		SQLiteImpl.CloseImpl(filepath);
+		SQLiteImpl.CloseImpl(handler);
 		return null;
 	}
 
