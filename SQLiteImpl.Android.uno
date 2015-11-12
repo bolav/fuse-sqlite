@@ -12,6 +12,9 @@ public extern(Android) static class SQLiteImpl {
 	static Dictionary<string,SQLiteDatabase> dbs = new Dictionary<string,SQLiteDatabase>();
 
 	public static object OpenImpl(string filename) {
+		if (dbs.ContainsKey(filename)) {
+		   return filename;
+		}
 		var db = SQLiteDatabase.openOrCreateDatabase(filename, null);
 		debug_log "Created " + filename;
 		debug_log db;

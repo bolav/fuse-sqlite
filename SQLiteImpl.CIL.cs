@@ -4,14 +4,17 @@ using System.Collections.Generic;
 using Mono.Data.Sqlite;
 
    // http://www.mono-project.com/docs/database-access/providers/sqlite/
+   // http://zetcode.com/db/sqlitecsharp/read/
    public class SQLiteImpl
    {
       static Dictionary<string,IDbConnection> dbs = new Dictionary<string,IDbConnection>();
 
       public static string OpenImpl(string filename)
       {
-         Console.WriteLine("Hello World");
          Console.WriteLine(filename);
+         if (dbs.ContainsKey(filename)) {
+            return filename;
+         }
          string connectionString = "URI=file:" + filename;
          IDbConnection dbcon = new SqliteConnection(connectionString);
          dbcon.Open();
@@ -49,6 +52,9 @@ using Mono.Data.Sqlite;
                if (ftype == typeof(System.Int64)) {
                   var f = reader.GetInt64(i);
                   val = f.ToString();
+               }
+               else if (ftype == typeof(System.String)) {
+                  val = reader.GetString(i);
                }
                else {
                   Console.WriteLine("Unknown type " + ftype);

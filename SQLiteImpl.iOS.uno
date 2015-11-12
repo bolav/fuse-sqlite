@@ -20,6 +20,9 @@ public extern(iOS) static class SQLiteImpl {
 	public static extern ObjC.ID OpenImplNative(string filename);
 
 	public static object OpenImpl(string filename) {
+		if (dbs.ContainsKey(filename)) {
+		   return filename;
+		}
 		var db = OpenImplNative(filename);
 		dbs.Add(filename, db);
 		return filename;
