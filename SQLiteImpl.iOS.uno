@@ -35,6 +35,12 @@ public extern(iOS) static class SQLiteImpl {
 
 	[TargetSpecificImplementation]
 	public static extern void CloseImplNative(ObjC.ID db);
+
+	public static void CloseImpl(string handler) {
+		var db = dbs[handler];
+		CloseImplNative(db);
+	}
+
 	[TargetSpecificImplementation]
 	public static extern iOS.Foundation.NSMutableArray QueryImplNative(ObjC.ID db, string statement);
 

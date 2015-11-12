@@ -7,7 +7,6 @@ public class SQLite {
 
 	static SQLite()
 	{
-		debug_log "static ctor";
 		Register("FuseJSX/SQLite", CreateModule());
 
 	}
@@ -16,6 +15,7 @@ public class SQLite {
 	{
 	  return new NativeModule(
 	  	new NativeFunction("open", (NativeCallback)Open),
+	  	new NativeFunction("close", (NativeCallback)Close),
 	  	new NativeFunction("prepare", (NativeCallback)Prepare),
 	  	new NativeFunction("execute", (NativeCallback)Execute),
 	  	new NativeFunction("query", (NativeCallback)Query),
@@ -26,11 +26,16 @@ public class SQLite {
 	static object Open(Context c, object[] args)
 	{
 		var filename = args[0] as string;
-		debug_log "Opening  " + filename;
 		var filepath = Path.Combine(Directory.GetUserDirectory(UserDirectory.Data), filename);
-		debug_log "Filepath " + filepath;
 		return SQLiteImpl.OpenImpl(filepath);
 		// return filename;
+	}
+
+	static object Close(Context c, object[] args)
+	{
+		var handler = args[0] as string;
+		SQLiteImpl.CloseImpl(filepath);
+		return null;
 	}
 
 	static object Prepare(Context c, object[] args) {
@@ -40,7 +45,6 @@ public class SQLite {
 	static object Execute(Context c, object[] args) {
 		var handler = args[0] as string;
 		var statement = args[1] as string;
-		debug_log "Executing " + statement + " on " + handler;
 		SQLiteImpl.ExecImpl(handler, statement);
 		return null;
 	}

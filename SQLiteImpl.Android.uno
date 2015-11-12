@@ -25,6 +25,13 @@ public extern(Android) static class SQLiteImpl {
 		return;
 	}
 
+	public static void CloseImpl(string handler) {
+		var db = dbs[handler];
+		db.close();
+		return;
+
+	}
+
 	public static List<Dictionary<string,string>> QueryImpl(string handler, string statement) {
 		var db = dbs[handler];
 		var cu = db.rawQuery(statement, null);
