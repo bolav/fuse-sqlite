@@ -6,6 +6,8 @@ Currently supports iOS, Android and CIL (Fuse Preview)
 
 Support for JavaScript and CMake is not planned.
 
+Issues, feature request and pull request are welcomed.
+
 Usage:
 ```
 var db = require('FuseJSX/SQLite');
@@ -38,3 +40,4 @@ It returns a hash of hashes.
 
 * Return array if given an array
 * Return count as a hash element
+
