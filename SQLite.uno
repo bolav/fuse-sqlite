@@ -45,8 +45,13 @@ public class SQLite : NativeModule {
 	}
 
 	object Query(Context context, object[] args) {
-		var handler = args[0] as string;
-		var statement = args[1] as string;
+		var ai = 0;
+		var handler = args[ai++] as string;
+		var array = args[ai] as Fuse.Scripting.Array;
+		if (array != null) {
+			ai++;
+		}
+		var statement = args[ai] as string;
 		var result = SQLiteImpl.QueryImpl(handler, statement);
 
 		int i = 0;
@@ -58,8 +63,16 @@ public class SQLite : NativeModule {
 				string val = pair.Value as string;
 				r_obj[key] = val;
 			}
-			obj[i.ToString()] = r_obj;
+			if (array != null) {
+				array[i] = r_obj;
+			}
+			else {
+				obj[i.ToString()] = r_obj;
+			}
 			i++;
+		}
+		if (array != null) {
+			return array;
 		}
 		obj["count"] = result.Count;
 		return obj;

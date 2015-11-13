@@ -4,8 +4,8 @@
 		var db = require('SQLite');
 		var h = db.open("file.sqlite");
 		db.execute(h, "create table if not exists ids (id integer primary key)");
-		db.execute(h, "insert into ids values (2)");
-		var r = db.query(h, "select * from ids");
+		// db.execute(h, "insert into ids values (2)");
+		var r = db.query(h, [], "select * from ids");
 		debug_log(JSON.stringify(r));
 	</JavaScript>
 </App>
