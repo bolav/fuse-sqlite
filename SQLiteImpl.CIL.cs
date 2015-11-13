@@ -10,7 +10,6 @@ using Mono.Data.Sqlite;
 
       public static string OpenImpl(string filename)
       {
-         Console.WriteLine("Hello World");
          Console.WriteLine(filename);
          string connectionString = "URI=file:" + filename;
          IDbConnection dbcon = new SqliteConnection(connectionString);
