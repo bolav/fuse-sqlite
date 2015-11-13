@@ -45,17 +45,13 @@ public class SQLite : NativeModule {
 	}
 
 	object Query(Context context, object[] args) {
-		var ai = 0;
-		var handler = args[ai++] as string;
-		var array = args[ai] as Fuse.Scripting.Array;
-		if (array != null) {
-			ai++;
-		}
-		var statement = args[ai] as string;
+		var handler = args[0] as string;
+		var statement = args[1] as string;
+
 		var result = SQLiteImpl.QueryImpl(handler, statement);
 
 		int i = 0;
-		var obj = context.NewObject();
+		var array = (Fuse.Scripting.Array)context.Evaluate("(no file)", "new Array()");
 		foreach (var row in result) {
 			var r_obj = context.NewObject();
 			foreach (var pair in row) {
@@ -63,19 +59,10 @@ public class SQLite : NativeModule {
 				string val = pair.Value as string;
 				r_obj[key] = val;
 			}
-			if (array != null) {
-				array[i] = r_obj;
-			}
-			else {
-				obj[i.ToString()] = r_obj;
-			}
+			array[i] = r_obj;
 			i++;
 		}
-		if (array != null) {
-			return array;
-		}
-		obj["count"] = result.Count;
-		return obj;
+		return array;
 	}
 
 }

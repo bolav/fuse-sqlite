@@ -22,24 +22,9 @@ db.execute(h, "create table if not exists ids (id integer primary key)");
 db.execute(h, "insert into ids values (2)");
 var r = db.query(h, "select * from ids");
 debug_log(JSON.stringify(r));
-
-r = db.query(h, [], "select * from ids");
-debug_log(JSON.stringify(r));
-
 ```
 
-It returns a hash of hashes.
-
-```
-{
-	"0":{"field1":"value1","field2":"value2"},
-	"1":{"field1":"value1","field2":"value2"},
-	"count":2
-}
-```
-
-If given an array it returns an array. (Needs to get an array, because Uno cannot create JavaScript Array)
-
+If returns an array:
 ```
 [
 	{"field1":"value1","field2":"value2"},
