@@ -12,8 +12,11 @@ Support for JavaScript and CMake is not planned.
 Issues, feature request and pull request are welcomed.
 
 ### Usage:
+In UX:
+`<SQLite ux:Global="SQLite" />`
+In JS:
 ```
-var db = require('FuseJSX/SQLite');
+var db = require('SQLite');
 var h = db.open("file.sqlite");
 db.execute(h, "create table if not exists ids (id integer primary key)");
 db.execute(h, "insert into ids values (2)");
