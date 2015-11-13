@@ -3,28 +3,22 @@ using Fuse.Scripting;
 using Fuse.Reactive;
 using Uno.IO;
 
-public class SQLite {
+// Version: 0.02
+// https://github.com/bolav/fuse-sqlite
 
-	static SQLite()
+public class SQLite : NativeModule {
+
+	public SQLite()
 	{
-		debug_log "Static ctor";
-		Register("FuseJSX/SQLite", CreateModule());
-
-	}
-
-	public static IModule CreateModule()
-	{
-	  return new NativeModule(
-	  	new NativeFunction("open", (NativeCallback)Open),
-	  	new NativeFunction("close", (NativeCallback)Close),
-	  	new NativeFunction("prepare", (NativeCallback)Prepare),
-	  	new NativeFunction("execute", (NativeCallback)Execute),
-	  	new NativeFunction("query", (NativeCallback)Query),
-	  );
+		AddMember(new NativeFunction("open", (NativeCallback)Open));
+	  	AddMember(new NativeFunction("close", (NativeCallback)Close));
+	  	AddMember(new NativeFunction("prepare", (NativeCallback)Prepare));
+	  	AddMember(new NativeFunction("execute", (NativeCallback)Execute));
+	  	AddMember(new NativeFunction("query", (NativeCallback)Query));
 	}
 
 
-	static object Open(Context c, object[] args)
+	object Open(Context c, object[] args)
 	{
 		var filename = args[0] as string;
 		var filepath = Path.Combine(Directory.GetUserDirectory(UserDirectory.Data), filename);
@@ -32,31 +26,32 @@ public class SQLite {
 		// return filename;
 	}
 
-	static object Close(Context c, object[] args)
+	object Close(Context c, object[] args)
 	{
 		var handler = args[0] as string;
 		SQLiteImpl.CloseImpl(handler);
 		return null;
 	}
 
-	static object Prepare(Context c, object[] args) {
+	object Prepare(Context c, object[] args) {
 		return null;
 	}
 
-	static object Execute(Context c, object[] args) {
+	object Execute(Context c, object[] args) {
 		var handler = args[0] as string;
 		var statement = args[1] as string;
 		SQLiteImpl.ExecImpl(handler, statement);
 		return null;
 	}
 
-	static object Query(Context context, object[] args) {
+	object Query(Context context, object[] args) {
 		var handler = args[0] as string;
 		var statement = args[1] as string;
+
 		var result = SQLiteImpl.QueryImpl(handler, statement);
 
 		int i = 0;
-		var obj = context.NewObject();
+		var array = (Fuse.Scripting.Array)context.Evaluate("(no file)", "new Array()");
 		foreach (var row in result) {
 			var r_obj = context.NewObject();
 			foreach (var pair in row) {
@@ -64,17 +59,10 @@ public class SQLite {
 				string val = pair.Value as string;
 				r_obj[key] = val;
 			}
-			obj[i.ToString()] = r_obj;
+			array[i] = r_obj;
 			i++;
 		}
-		return obj;
+		return array;
 	}
-
-
-	static void Register(string moduleId, IModule module)
-	{
-		Uno.UX.Resource.SetGlobalKey(module, moduleId);
-	}
-
 
 }
