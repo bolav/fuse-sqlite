@@ -1,5 +1,6 @@
-Library to use SQLite in Fuse.
+Library to use [SQLite](https://www.sqlite.org/) in [Fuse](http://www.fusetools.com/).
 
+Status: pre-alpha (proof of concept)
 
 Currently supports iOS, Android and CIL (Fuse Preview)
 
@@ -15,6 +16,14 @@ var r = db.query(h, "select * from ids");
 debug_log(JSON.stringify(r));
 ```
 
+It returns a hash of hashes.
+
+```
+{
+	"0":{"field":"value"},
+	"1":{"field":"value"}
+}
+```
 
 = Known Issues =
 
@@ -23,4 +32,9 @@ debug_log(JSON.stringify(r));
 * No support for CMake
 * Not able to use from `Project` in unoproj
 * Constructor not being loaded in Fuse Preview. (Can be solved with `<SQLite ux:Global="Workaround" />` in the UX)
+* No support for bundled pre-made databases
 
+= TODO =
+
+* Return array if given an array
+* Return count as a hash element
