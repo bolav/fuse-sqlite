@@ -1,3 +1,6 @@
+Fuse SQLite bindings
+====================
+
 Library to use [SQLite](https://www.sqlite.org/) in [Fuse](http://www.fusetools.com/).
 
 Status: pre-alpha (proof of concept)
@@ -8,7 +11,7 @@ Support for JavaScript and CMake is not planned.
 
 Issues, feature request and pull request are welcomed.
 
-Usage:
+### Usage:
 ```
 var db = require('FuseJSX/SQLite');
 var h = db.open("file.sqlite");
@@ -27,7 +30,7 @@ It returns a hash of hashes.
 }
 ```
 
-= Known Issues =
+### Known Issues
 
 * No support for binding arguments
 * No support for cursor
@@ -36,7 +39,7 @@ It returns a hash of hashes.
 * Constructor not being loaded in Fuse Preview. (Can be solved with `<SQLite ux:Global="Workaround" />` in the UX)
 * No support for bundled pre-made databases
 
-= TODO =
+### TODO
 
 * Return array if given an array
 * Return count as a hash element
