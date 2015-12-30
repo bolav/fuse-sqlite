@@ -1,6 +1,6 @@
 <Package>
 <Extensions Backend="CIL">
-	<Require AssemblyReference="SQLiteImpl.CIL.dll" />
+	<Require Assembly="SQLiteImpl.CIL.dll" />
     <CopyFile Name="SQLiteImpl.CIL.dll" TargetName="SQLiteImpl.CIL.dll" />
 </Extensions>
 </Package>
