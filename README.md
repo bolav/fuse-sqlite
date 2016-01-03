@@ -45,3 +45,4 @@ It returns an array:
 ### Windows
 
 * The sqlite3.dll is downloaded from http://www.sqlite.org/download.html
+* Mono.Data.Sqlite.dll is included from Mono.
