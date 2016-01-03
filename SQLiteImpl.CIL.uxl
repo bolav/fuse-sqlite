@@ -1,6 +1,8 @@
 <Package>
 <Extensions Backend="CIL">
-	<Require AssemblyReference="SQLiteImpl.CIL.dll" />
-    <CopyFile Name="SQLiteImpl.CIL.dll" TargetName="SQLiteImpl.CIL.dll" />
+	<Require Assembly="SQLiteImpl.CIL.dll" />
+	<CopyFile Name="SQLiteImpl.CIL.dll" TargetName="SQLiteImpl.CIL.dll" />
+	<CopyFile Name="Mono.Data.Sqlite.dll" TargetName="Mono.Data.Sqlite.dll" />
+	<CopyFile Name="sqlite3.dll" TargetName="sqlite3.dll" />
 </Extensions>
 </Package>
