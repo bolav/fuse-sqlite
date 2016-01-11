@@ -1,10 +1,10 @@
 <Package>
 <Extensions Backend="CPlusPlus" Condition="iOS">
 	<Type Name="SQLiteImpl">
-		<Set Source.FileExtension="mm" />
+		<Set FileExtension="mm" />
         <Require ObjC.Class.Include="#include &lt;@{iOS.Foundation.NSString:Include}&gt;" />
 		<Require Source.Include="sqlite3.h" />
-		<Require Build.LinkLibrary="sqlite3" />
+		<Require LinkLibrary="sqlite3" />
 	    <Method Signature="OpenImplNative(string):ObjC.ID">
 	        <Body>
 	            <![CDATA[
