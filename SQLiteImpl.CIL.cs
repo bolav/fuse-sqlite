@@ -47,18 +47,7 @@ using Mono.Data.Sqlite;
          {
             Dictionary<string,string> row = new Dictionary<string,string>();
             for (var i = 0; i < reader.FieldCount; i++) {
-               string val = "";
-               var ftype = reader.GetFieldType(i);
-               if (ftype == typeof(System.Int64)) {
-                  var f = reader.GetInt64(i);
-                  val = f.ToString();
-               }
-               else if (ftype == typeof(System.String)) {
-                  val = reader.GetString(i);
-               }
-               else {
-                  Console.WriteLine("Unknown type " + ftype);
-               }
+               string val = reader.GetValue(i).ToString();
                row.Add(reader.GetName(i),val);
             }
             result.Add(row);
