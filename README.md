@@ -7,8 +7,6 @@ Status: pre-alpha (proof of concept)
 
 Currently supports iOS, Android and CIL (Fuse Preview)
 
-Support for JavaScript and CMake is not planned.
-
 Issues, feature request and pull request are welcomed.
 
 ### Usage:
@@ -21,7 +19,7 @@ In JS:
 var db = require('SQLite');
 var h = db.open("file.sqlite");
 db.execute(h, "create table if not exists ids (id integer primary key)");
-db.execute(h, "insert into ids values (2)");
+db.execute(h, "insert into ids values (?)",2);
 var r = db.query(h, "select * from ids");
 debug_log(JSON.stringify(r));
 ```
@@ -36,11 +34,11 @@ It returns an array:
 
 ### Known Issues
 
-* No support for binding arguments
 * No support for cursor
 * No support for CMake
 * No support for bundled pre-made databases
 * Error handling is unsupported, and different between the targets
+* Support for JavaScript and CMake Fuse targets is not planned.
 
 ### Windows
 
