@@ -4,6 +4,7 @@
 		var Observable = require('FuseJS/Observable');
 		var result = Observable('');
 		var insert_id = Observable('');
+		var select_id = Observable('');
 		var db = require('SQLite');
 		var h = db.open("file.sqlite");
 
@@ -22,7 +23,15 @@
 		}
 
 		function select_values () {
-			var r = db.query(h, "select * from ids");
+			var r = '';
+			if (select_id.value != '') {
+				console.log("SELECT * WHERE id = " + select_id.value);
+				r = db.query(h, "select * from ids WHERE id = ?", select_id.value);
+			}
+			else {
+				console.log("select * from ids");
+				r = db.query(h, "select * from ids");
+			}
 			result.value = JSON.stringify(r);
 			debug_log(JSON.stringify(r));
 		}
@@ -34,7 +43,8 @@
 			init_db: init_db,
 			insert_value: insert_value,
 			select_values: select_values,
-			insert_id: insert_id
+			insert_id: insert_id,
+			select_id: select_id
 		}
 	</JavaScript>
 	<ClientPanel>
@@ -42,7 +52,10 @@
 			<StackPanel Orientation="Horizontal">
 				<TextInput Value="{insert_id}" /><Button Text="Insert" Clicked="{insert_value}" />
 			</StackPanel>
-			<Button Text="Select" Clicked="{select_values}" />
+			<StackPanel Orientation="Horizontal">
+				<TextInput Value="{select_id}" />
+				<Button Text="Select" Clicked="{select_values}" />
+			</StackPanel>
 			<Text TextWrapping="Wrap" Value="{result}" />
 		</StackPanel>
 	</ClientPanel>
