@@ -1,12 +1,50 @@
 <App Theme="Basic">
 	<SQLite ux:Global="SQLite" />
 	<JavaScript>
+		var Observable = require('FuseJS/Observable');
+		var result = Observable('');
+		var insert_id = Observable('');
 		var db = require('SQLite');
 		var h = db.open("file.sqlite");
-		db.execute(h, "create table if not exists ids (id integer primary key)");
-		// db.execute(h, "insert into ids values (2)");
-		var r = db.query(h, "select * from ids");
-		debug_log(JSON.stringify(r));
+
+		function init_db () {
+			db.execute(h, "create table if not exists ids (id integer primary key)");
+		}
+
+		function insert_value () {
+			try {
+				db.execute(h, "insert into ids values (?)", insert_id.value);
+				result.value="Insert successful";
+			}
+			catch (e) {
+				result.value = "Error inserting " + e;
+			}
+		}
+
+		function select_values () {
+			var r = db.query(h, "select * from ids");
+			result.value = JSON.stringify(r);
+			debug_log(JSON.stringify(r));
+		}
+
+		init_db();
+
+		module.exports = {
+			result: result,
+			init_db: init_db,
+			insert_value: insert_value,
+			select_values: select_values,
+			insert_id: insert_id
+		}
 	</JavaScript>
+	<ClientPanel>
+		<StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<TextInput Value="{insert_id}" /><Button Text="Insert" Clicked="{insert_value}" />
+			</StackPanel>
+			<Button Text="Select" Clicked="{select_values}" />
+			<Text TextWrapping="Wrap" Value="{result}" />
+		</StackPanel>
+	</ClientPanel>
 </App>
 

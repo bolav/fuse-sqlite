@@ -40,15 +40,26 @@ public class SQLite : NativeModule {
 	object Execute(Context c, object[] args) {
 		var handler = args[0] as string;
 		var statement = args[1] as string;
-		SQLiteImpl.ExecImpl(handler, statement);
+		var param_len = args.Length - 2;
+
+		string[] param = new string[param_len];
+		for (var i=0; i < param_len; i++) {
+			param[i] = args[i+2].ToString();
+		}
+		SQLiteImpl.ExecImpl(handler, statement, param);
 		return null;
 	}
 
 	object Query(Context context, object[] args) {
 		var handler = args[0] as string;
 		var statement = args[1] as string;
+		var param_len = args.Length - 2;
 
-		var result = SQLiteImpl.QueryImpl(handler, statement);
+		string[] param = new string[param_len];
+		for (var j=0; j < param_len; j++) {
+			param[j] = args[j+2] as string;
+		}
+		var result =  SQLiteImpl.QueryImpl(handler, statement, param);
 
 		int i = 0;
 		var array = (Fuse.Scripting.Array)context.Evaluate("(no file)", "new Array()");

@@ -6,11 +6,13 @@ namespace Dela.Mono.Examples
    {
       public static void Main(string[] args)
       {
-         Console.WriteLine("Hello World");
          var h = SQLiteImpl.OpenImpl("test.sqlite");
-         SQLiteImpl.ExecImpl(h, "create table if not exists ids (id integer primary key)");
-         SQLiteImpl.ExecImpl(h, "insert into ids values (2)");
-	     var r = SQLiteImpl.QueryImpl(h, "select * from ids");
+         string[] empty = new string[0];
+         string[] param = {"2"};
+         SQLiteImpl.ExecImpl(h, "create table if not exists ids (id integer primary key)", empty);
+         SQLiteImpl.ExecImpl(h, "insert into ids values (?)", param);
+         SQLiteImpl.ExecImpl(h, "insert into ids values (?,?,?,?)", param);
+	     var r = SQLiteImpl.QueryImpl(h, "select * from ids", empty);
 	     Console.WriteLine(r);
       }
    } 
