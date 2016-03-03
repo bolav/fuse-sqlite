@@ -22,9 +22,16 @@ public extern(Android) static class SQLiteImpl {
 		return filename;
 	}
 
-	public static void ExecImpl(string handler, string statement) {
+	public static void ExecImpl(string handler, string statement, string[] param) {
 		var db = dbs[handler];
-		db.execSQL(statement);
+
+		var list = new global::Android.Runtime.ObjectArray<Android.java.lang.Object>(param.Length);
+		for (int i=0; i < param.Length; i++) {
+			Android.java.lang.String s = param[i];			
+			list[i] = s;
+		}
+
+		db.execSQL(statement, list);
 		return;
 	}
 
@@ -35,9 +42,14 @@ public extern(Android) static class SQLiteImpl {
 
 	}
 
-	public static List<Dictionary<string,string>> QueryImpl(string handler, string statement) {
+	public static List<Dictionary<string,string>> QueryImpl(string handler, string statement, string[] param) {
 		var db = dbs[handler];
-		var cu = db.rawQuery(statement, null);
+
+		var list = new global::Android.Runtime.ObjectArray<Android.java.lang.String>(param.Length);
+		for (int i=0; i < param.Length; i++)
+			list[i] = param[i];
+
+		var cu = db.rawQuery(statement, list);
 		var result = new List<Dictionary<string,string>>();
 		cu.moveToFirst();
 		while (!cu.isAfterLast()) {

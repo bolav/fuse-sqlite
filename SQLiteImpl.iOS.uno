@@ -35,6 +35,7 @@ public extern(iOS) static class SQLiteImpl {
 		return filename;
 	}
 
+	// TODO: Throw errors
 	[Foreign(Language.ObjC)]
 	public static extern void ExecImplNative(ObjC.ID db, string statement, string[] param)
 	@{
@@ -74,6 +75,7 @@ public extern(iOS) static class SQLiteImpl {
 		CloseImplNative(db);
 	}
 
+	// TODO: Throw errors
 	[Foreign(Language.ObjC)]
 	public static extern ObjC.ID QueryImplNative(ObjC.ID db, string statement, string[] param)
 	@{
@@ -128,6 +130,8 @@ public extern(iOS) static class SQLiteImpl {
 	public static List<Dictionary<string,string>> QueryImpl(string handler, string statement, string[] param) {
 		var db = dbs[handler];
 		var r_id = QueryImplNative(db, statement, param);
+
+		// TODO: Leave bindings behind
 		var r = new iOS.Foundation.NSMutableArray(r_id);
 		List<Dictionary<string,string>> result = new List<Dictionary<string,string>>();
 		for (var i=0; i<r.count(); i++) {
