@@ -98,11 +98,12 @@ public extern(iOS) static class SQLiteImpl {
 		BOOL prepareStatementResult = sqlite3_prepare_v2((sqlite3 *)db, [statement UTF8String], -1, &compiledStatement, NULL);
 		if(prepareStatementResult != SQLITE_OK) {
 		    NSLog(@"Prepare failure: %s", sqlite3_errmsg((sqlite3 *)db));
-		    return nil;
+		    return;
 		}
 		for (int i=0; i<param.count; i++) {
 			if (sqlite3_bind_text(compiledStatement, i + 1, [param[i] UTF8String], -1, NULL) != SQLITE_OK) {
 			    NSLog(@"Bind %d failure: %s", i, sqlite3_errmsg((sqlite3 *)db));
+			    return;
 			}
 		}
 

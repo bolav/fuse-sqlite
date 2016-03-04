@@ -28,6 +28,8 @@
         "Experimental.iOS"
   ],
   "Includes": [
-    "*"
+    "*.uno",
+    "*.uxl",
+    "*.ux"
   ]
 }
