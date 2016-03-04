@@ -49,10 +49,12 @@ public extern(iOS) static class SQLiteImpl {
 		for (int i=0; i<param.count; i++) {
 			if (sqlite3_bind_text(compiledStatement, i + 1, [param[i] UTF8String], -1, NULL) != SQLITE_OK) {
 			    NSLog(@"Bind %d failure: %s", i, sqlite3_errmsg((sqlite3 *)db));
+			    return;
 			}
 		}
 		if (sqlite3_step(compiledStatement) != SQLITE_DONE) {
 		    NSLog(@"Step failure: %s", sqlite3_errmsg((sqlite3 *)db));
+		    return;
 		}
 		sqlite3_finalize(compiledStatement);
 		return;
@@ -75,21 +77,9 @@ public extern(iOS) static class SQLiteImpl {
 		CloseImplNative(db);
 	}
 
-	public static void _AddRowToResult (List<Dictionary<string,string>> reslist, Dictionary<string,string> row) {
-		reslist.Add(row);
-	}
-
-	public static Dictionary<string,string> _NewRow () {
-		return new Dictionary<string,string>();
-	}
-
-	public static void _SetColumn(Dictionary<string,string> row, string key, string val) {
-		row.Add(key, val);
-	}
-
 	// TODO: Throw errors
 	[Foreign(Language.ObjC)]
-	public static extern void QueryImplNative(List<Dictionary<string,string>> result, ObjC.ID db, string statement, string[] param)
+	public static extern void QueryImplNative(FuseX.SQLite.JSListDict result, ObjC.ID db, string statement, string[] param)
 	@{
 		sqlite3_stmt *compiledStatement;
 		NSMutableArray *columnNames = [[NSMutableArray alloc] init];
@@ -98,17 +88,18 @@ public extern(iOS) static class SQLiteImpl {
 		BOOL prepareStatementResult = sqlite3_prepare_v2((sqlite3 *)db, [statement UTF8String], -1, &compiledStatement, NULL);
 		if(prepareStatementResult != SQLITE_OK) {
 		    NSLog(@"Prepare failure: %s", sqlite3_errmsg((sqlite3 *)db));
-		    return nil;
+		    return;
 		}
 		for (int i=0; i<param.count; i++) {
 			if (sqlite3_bind_text(compiledStatement, i + 1, [param[i] UTF8String], -1, NULL) != SQLITE_OK) {
 			    NSLog(@"Bind %d failure: %s", i, sqlite3_errmsg((sqlite3 *)db));
+			    return;
 			}
 		}
 
 		while(sqlite3_step(compiledStatement) == SQLITE_ROW) {
 			// Initialize the mutable array that will contain the data of a fetched row.
-		    id<UnoObject> row = @{_NewRow():Call()};
+			@{FuseX.SQLite.JSListDict:Of(result).NewRowSetActive():Call()};
 
 		    // Get the total number of columns.
 		    int totalColumns = sqlite3_column_count(compiledStatement);
@@ -128,19 +119,16 @@ public extern(iOS) static class SQLiteImpl {
 		        // If there are contents in the currenct column (field) then add them to the current row array.
 		        if (dbDataAsChars != NULL) {
 		            // Convert the characters to string.
-		            @{_SetColumn(Dictionary<string,string>, string, string):Call(row, [columnNames objectAtIndex:i], [NSString stringWithUTF8String:dbDataAsChars])};
+		            @{FuseX.SQLite.JSListDict:Of(result).SetRow_Column(string,string):Call([columnNames objectAtIndex:i], [NSString stringWithUTF8String:dbDataAsChars])};
 		        }
 
 		    }
-		    @{_AddRowToResult(List<Dictionary<string,string>>, Dictionary<string,string>):Call(result, row)};
 		}
 		[columnNames release];
 	@}
 
-	public static List<Dictionary<string,string>> QueryImpl(string handler, string statement, string[] param) {
+	public static void QueryImpl(FuseX.SQLite.JSListDict ld, string handler, string statement, string[] param) {
 		var db = dbs[handler];
-		List<Dictionary<string,string>> result = new List<Dictionary<string,string>>();
-		QueryImplNative(result, db, statement, param);
-		return result;
+		QueryImplNative(ld, db, statement, param);
 	}
 }

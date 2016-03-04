@@ -2,10 +2,10 @@ using Fuse;
 using Fuse.Scripting;
 using Fuse.Reactive;
 using Uno.IO;
+using FuseX.SQLite;
 
 // Version: 0.02
 // https://github.com/bolav/fuse-sqlite
-
 public class SQLite : NativeModule {
 
 	public SQLite()
@@ -59,21 +59,56 @@ public class SQLite : NativeModule {
 		for (var j=0; j < param_len; j++) {
 			param[j] = args[j+2] as string;
 		}
-		var result =  SQLiteImpl.QueryImpl(handler, statement, param);
+		var jsld = new JSListDict(context);
 
-		int i = 0;
-		var array = (Fuse.Scripting.Array)context.Evaluate("(no file)", "new Array()");
-		foreach (var row in result) {
-			var r_obj = context.NewObject();
-			foreach (var pair in row) {
-				string key = pair.Key as string;
-				string val = pair.Value as string;
-				r_obj[key] = val;
-			}
-			array[i] = r_obj;
-			i++;
+		if defined(!CIL) {
+			SQLiteImpl.QueryImpl(jsld, handler, statement, param);
 		}
-		return array;
+
+		if defined(CIL) {
+			var result =  SQLiteImpl.QueryImpl(handler, statement, param);
+			int i = 0;
+			foreach (var row in result) {
+				jsld.NewRowSetActive();
+				foreach (var pair in row) {
+					string key = pair.Key as string;
+					string val = pair.Value as string;
+					jsld.SetRow_Column(key,val);
+				}
+				i++;
+			}
+		}
+		return jsld.GetScriptingArray();
 	}
 
+}
+
+namespace FuseX.SQLite {
+	public class JSListDict : ListDict {
+		Context ctx;
+		Fuse.Scripting.Array array;
+		Fuse.Scripting.Object cur_row;
+		int pos = 0;
+
+		public JSListDict (Context c) {
+			ctx = c;
+			array = (Fuse.Scripting.Array)ctx.Evaluate("(no file)", "new Array()");
+		}
+		public void NewRowSetActive () {
+			cur_row = ctx.NewObject();
+			array[pos] = cur_row;
+			pos++;
+		}
+		public void SetRow_Column (string key, string val) {
+			cur_row[key] = val;
+		}
+		public Fuse.Scripting.Array GetScriptingArray () {
+			return array;
+		}
+	}
+
+	public interface ListDict {
+		void NewRowSetActive();
+		void SetRow_Column(string key, string val);
+	}
 }
