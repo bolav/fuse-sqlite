@@ -65,35 +65,22 @@ public extern(Android) static class SQLiteImpl {
 	}
 
     [Foreign(Language.Java)]
-	public static extern void QueryImplNative(List<Dictionary<string,string>> result, Java.Object db, string statement, string[] param)
+	public static extern void QueryImplNative(FuseX.SQLite.JSListDict ld, Java.Object db, string statement, string[] param)
 	@{
 		android.database.Cursor curs = ((android.database.sqlite.SQLiteDatabase)db).rawQuery(statement, param.copyArray());
 		curs.moveToFirst();
 		while (!curs.isAfterLast()) {
-			Object row = @{_NewRow():Call()};
+			@{FuseX.SQLite.JSListDict:Of(ld).NewRowSetActive():Call()};
 			for (int i=0; i<curs.getColumnCount(); i++) {
-				@{_SetColumn(Dictionary<string,string>, string, string):Call(row, curs.getColumnName(i), cu.getString(i))};
+				@{FuseX.SQLite.JSListDict:Of(ld).SetRow_Column(string,string):Call(curs.getColumnName(i), curs.getString(i))};
 			}
-		    @{_AddRowToResult(List<Dictionary<string,string>>, Dictionary<string,string>):Call(result, row)};
-		    cu.moveToNext();
+		    curs.moveToNext();
 		}
 	@}
 
-	public static List<Dictionary<string,string>> QueryImpl(string handler, string statement, string[] param) {
+	public static void QueryImpl(FuseX.SQLite.JSListDict ld, string handler, string statement, string[] param) {
 		var db = dbs[handler];
 
-		var result = new List<Dictionary<string,string>>();
-		QueryImplNative(result, db, statement, param);
-		/* var cu = db.rawQuery(statement, list);
-		cu.moveToFirst();
-		while (!cu.isAfterLast()) {
-			var row_dict = new Dictionary<string,string>();
-			for (var i=0; i<cu.getColumnCount(); i++) {
-				row_dict.Add(cu.getColumnName(i), cu.getString(i));
-			}
-			result.Add(row_dict);
-			cu.moveToNext();
-		} */
-		return result;
+		QueryImplNative(ld, db, statement, param);
 	}
 }
