@@ -9,48 +9,82 @@ using Android.android.database.sqlite;
 [TargetSpecificImplementation]
 public extern(Android) static class SQLiteImpl {
 
-	static Dictionary<string,SQLiteDatabase> dbs = new Dictionary<string,SQLiteDatabase>();
+	static Dictionary<string,Java.Object> dbs = new Dictionary<string,Java.Object>();
+
+    [Foreign(Language.Java)]
+	public static extern Java.Object OpenImplNative(string filename)
+	@{
+		return android.database.sqlite.SQLiteDatabase.openOrCreateDatabase(filename, null);
+	@}
 
 	public static object OpenImpl(string filename) {
 		if (dbs.ContainsKey(filename)) {
 		   return filename;
 		}
-		var db = SQLiteDatabase.openOrCreateDatabase(filename, null);
+		var db = OpenImplNative(filename);
 		debug_log "Created " + filename;
-		debug_log db;
 		dbs.Add(filename, db);
 		return filename;
 	}
 
+
+    [Foreign(Language.Java)]
+	public static extern void ExecImplNative(Java.Object db, string statement, string[] param)
+	@{
+		((android.database.sqlite.SQLiteDatabase)db).execSQL(statement, param.copyArray());
+	@}
+
 	public static void ExecImpl(string handler, string statement, string[] param) {
 		var db = dbs[handler];
-
-		var list = new global::Android.Runtime.ObjectArray<Android.java.lang.Object>(param.Length);
-		for (int i=0; i < param.Length; i++) {
-			Android.java.lang.String s = param[i];			
-			list[i] = s;
-		}
-
-		db.execSQL(statement, list);
+		ExecImplNative(db, statement, param);
 		return;
 	}
+
+    [Foreign(Language.Java)]
+	public static extern void CloseImplNative(Java.Object db)
+	@{
+		((android.database.sqlite.SQLiteDatabase)db).close();
+	@}
 
 	public static void CloseImpl(string handler) {
 		var db = dbs[handler];
-		db.close();
+		CloseImplNative(db);
 		return;
-
 	}
+
+	public static void _AddRowToResult (List<Dictionary<string,string>> reslist, Dictionary<string,string> row) {
+		reslist.Add(row);
+	}
+
+	public static Dictionary<string,string> _NewRow () {
+		return new Dictionary<string,string>();
+	}
+
+	public static void _SetColumn(Dictionary<string,string> row, string key, string val) {
+		row.Add(key, val);
+	}
+
+    [Foreign(Language.Java)]
+	public static extern void QueryImplNative(List<Dictionary<string,string>> result, Java.Object db, string statement, string[] param)
+	@{
+		android.database.Cursor curs = ((android.database.sqlite.SQLiteDatabase)db).rawQuery(statement, param.copyArray());
+		curs.moveToFirst();
+		while (!curs.isAfterLast()) {
+			Object row = @{_NewRow():Call()};
+			for (int i=0; i<curs.getColumnCount(); i++) {
+				@{_SetColumn(Dictionary<string,string>, string, string):Call(row, curs.getColumnName(i), cu.getString(i))};
+			}
+		    @{_AddRowToResult(List<Dictionary<string,string>>, Dictionary<string,string>):Call(result, row)};
+		    cu.moveToNext();
+		}
+	@}
 
 	public static List<Dictionary<string,string>> QueryImpl(string handler, string statement, string[] param) {
 		var db = dbs[handler];
 
-		var list = new global::Android.Runtime.ObjectArray<Android.java.lang.String>(param.Length);
-		for (int i=0; i < param.Length; i++)
-			list[i] = param[i];
-
-		var cu = db.rawQuery(statement, list);
 		var result = new List<Dictionary<string,string>>();
+		QueryImplNative(result, db, statement, param);
+		/* var cu = db.rawQuery(statement, list);
 		cu.moveToFirst();
 		while (!cu.isAfterLast()) {
 			var row_dict = new Dictionary<string,string>();
@@ -59,7 +93,7 @@ public extern(Android) static class SQLiteImpl {
 			}
 			result.Add(row_dict);
 			cu.moveToNext();
-		}
+		} */
 		return result;
 	}
 }
