@@ -4,7 +4,7 @@ using Fuse.Reactive;
 using Uno.IO;
 using FuseX.SQLite;
 
-// Version: 0.02
+// Version: 0.03
 // https://github.com/bolav/fuse-sqlite
 public class SQLite : NativeModule {
 
