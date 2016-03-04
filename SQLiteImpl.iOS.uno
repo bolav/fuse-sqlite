@@ -75,12 +75,23 @@ public extern(iOS) static class SQLiteImpl {
 		CloseImplNative(db);
 	}
 
+	public static void _AddRowToResult (List<Dictionary<string,string>> reslist, Dictionary<string,string> row) {
+		reslist.Add(row);
+	}
+
+	public static Dictionary<string,string> _NewRow () {
+		return new Dictionary<string,string>();
+	}
+
+	public static void _SetColumn(Dictionary<string,string> row, string key, string val) {
+		row.Add(key, val);
+	}
+
 	// TODO: Throw errors
 	[Foreign(Language.ObjC)]
-	public static extern ObjC.ID QueryImplNative(ObjC.ID db, string statement, string[] param)
+	public static extern void QueryImplNative(List<Dictionary<string,string>> result, ObjC.ID db, string statement, string[] param)
 	@{
 		sqlite3_stmt *compiledStatement;
-		NSMutableArray *result = [[NSMutableArray alloc] init];
 		NSMutableArray *columnNames = [[NSMutableArray alloc] init];
 
 		// Load all data from database to memory.
@@ -97,7 +108,7 @@ public extern(iOS) static class SQLiteImpl {
 
 		while(sqlite3_step(compiledStatement) == SQLITE_ROW) {
 			// Initialize the mutable array that will contain the data of a fetched row.
-		    NSMutableDictionary *row = [[NSMutableDictionary alloc] init];
+		    id<UnoObject> row = @{_NewRow():Call()};
 
 		    // Get the total number of columns.
 		    int totalColumns = sqlite3_column_count(compiledStatement);
@@ -117,36 +128,19 @@ public extern(iOS) static class SQLiteImpl {
 		        // If there are contents in the currenct column (field) then add them to the current row array.
 		        if (dbDataAsChars != NULL) {
 		            // Convert the characters to string.
-		            [row setObject:[NSString stringWithUTF8String:dbDataAsChars] forKey:[columnNames objectAtIndex:i]];
+		            @{_SetColumn(Dictionary<string,string>, string, string):Call(row, [columnNames objectAtIndex:i], [NSString stringWithUTF8String:dbDataAsChars])};
 		        }
 
 		    }
-		    [result addObject:row];
+		    @{_AddRowToResult(List<Dictionary<string,string>>, Dictionary<string,string>):Call(result, row)};
 		}
 		[columnNames release];
-		return result;
 	@}
 
 	public static List<Dictionary<string,string>> QueryImpl(string handler, string statement, string[] param) {
 		var db = dbs[handler];
-		var r_id = QueryImplNative(db, statement, param);
-
-		// TODO: Leave bindings behind
-		var r = new iOS.Foundation.NSMutableArray(r_id);
 		List<Dictionary<string,string>> result = new List<Dictionary<string,string>>();
-		for (var i=0; i<r.count(); i++) {
-			var row_dict = new Dictionary<string,string>();
-			var row_id = r.objectAtIndex(i);
-			var row = new NSMutableDictionary(row_id);
-			var keys = row.allKeys();
-			for (var ii=0; ii<keys.count(); ii++) {
-				var key = keys.objectAtIndex(ii);
-				var val = row.objectForKey(key);
-				row_dict.Add(new NSString(key).stringByAppendingString(""), new NSString(val).stringByAppendingString(""));
-			}
-			result.Add(row_dict);
-		}
-
+		QueryImplNative(result, db, statement, param);
 		return result;
 	}
 }
