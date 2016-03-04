@@ -3,7 +3,7 @@ Fuse SQLite bindings
 
 Library to use [SQLite](https://www.sqlite.org/) in [Fuse](http://www.fusetools.com/).
 
-Status: pre-alpha (proof of concept)
+Status: beta
 
 Currently supports iOS, Android and CIL (Fuse Preview)
 

@@ -22,8 +22,10 @@ public class SQLite : NativeModule {
 	{
 		var filename = args[0] as string;
 		var filepath = Path.Combine(Directory.GetUserDirectory(UserDirectory.Data), filename);
+		// TODO: return dbobject, instead of handle
+		//var module = new SQLiteDb(filepath);
+		//return module.Evaluate("SQLiteDb", c);
 		return SQLiteImpl.OpenImpl(filepath);
-		// return filename;
 	}
 
 	object Close(Context c, object[] args)
@@ -94,12 +96,12 @@ namespace FuseX.SQLite {
 			ctx = c;
 			array = (Fuse.Scripting.Array)ctx.Evaluate("(no file)", "new Array()");
 		}
-		public void NewRowSetActive () {
+		public override void NewRowSetActive () {
 			cur_row = ctx.NewObject();
 			array[pos] = cur_row;
 			pos++;
 		}
-		public void SetRow_Column (string key, string val) {
+		public override void SetRow_Column (string key, string val) {
 			cur_row[key] = val;
 		}
 		public Fuse.Scripting.Array GetScriptingArray () {
@@ -107,8 +109,8 @@ namespace FuseX.SQLite {
 		}
 	}
 
-	public interface ListDict {
-		void NewRowSetActive();
-		void SetRow_Column(string key, string val);
+	public abstract class ListDict {
+		public abstract void NewRowSetActive();
+		public abstract void SetRow_Column(string key, string val);
 	}
 }
