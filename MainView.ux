@@ -50,10 +50,10 @@
 	<ClientPanel>
 		<StackPanel>
 			<StackPanel Orientation="Horizontal">
-				<TextInput Value="{insert_id}" /><Button Text="Insert" Clicked="{insert_value}" />
+				<TextInput Value="{insert_id}" Width="200" /><Button Text="Insert" Clicked="{insert_value}" />
 			</StackPanel>
 			<StackPanel Orientation="Horizontal">
-				<TextInput Value="{select_id}" />
+				<TextInput Value="{select_id}" Width="200" />
 				<Button Text="Select" Clicked="{select_values}" />
 			</StackPanel>
 			<Text TextWrapping="Wrap" Value="{result}" />
