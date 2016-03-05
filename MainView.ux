@@ -5,16 +5,16 @@
 		var result = Observable('');
 		var insert_id = Observable('');
 		var select_id = Observable('');
-		var db = require('SQLite');
-		var h = db.open("file.sqlite");
+		var sqlite = require('SQLite');
+		var db = sqlite.open("file.sqlite");
 
 		function init_db () {
-			db.execute(h, "create table if not exists ids (id integer primary key)");
+			db.execute("create table if not exists ids (id integer primary key)");
 		}
 
 		function insert_value () {
 			try {
-				db.execute(h, "insert into ids values (?)", insert_id.value);
+				db.execute("insert into ids values (?)", insert_id.value);
 				result.value="Insert successful";
 			}
 			catch (e) {
@@ -26,11 +26,11 @@
 			var r = '';
 			if (select_id.value != '') {
 				console.log("SELECT * WHERE id = " + select_id.value);
-				r = db.query(h, "select * from ids WHERE id = ?", select_id.value);
+				r = db.query("select * from ids WHERE id = ?", select_id.value);
 			}
 			else {
 				console.log("select * from ids");
-				r = db.query(h, "select * from ids");
+				r = db.query("select * from ids");
 			}
 			result.value = JSON.stringify(r);
 			debug_log(JSON.stringify(r));

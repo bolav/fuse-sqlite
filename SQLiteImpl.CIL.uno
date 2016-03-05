@@ -5,7 +5,7 @@ using Uno.Compiler.ExportTargetInterop;
 public extern(CIL) static class SQLiteImpl {
 
 	[TargetSpecificImplementation]
-	public static extern object OpenImpl(string filename);
+	public static extern string OpenImpl(string filename);
 
 	[TargetSpecificImplementation]
 	public static extern void ExecImpl(string handler, string statement, string[] param);
