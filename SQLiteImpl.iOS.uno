@@ -14,8 +14,6 @@ using iOS.Foundation;
 [TargetSpecificImplementation]
 public extern(iOS) static class SQLiteImpl {
 
-	static Dictionary<string,ObjC.ID> dbs = new Dictionary<string,ObjC.ID>();
-
 	// TODO: Rewrite to an exception thrower, to make this modular
 	public static void ThrowException (string exception) {
 		throw new Fuse.Scripting.Error(exception);
@@ -24,30 +22,21 @@ public extern(iOS) static class SQLiteImpl {
 	[Require("Source.Include", "sqlite3.h")]
 	[Require("LinkLibrary", "sqlite3")]
 	[Foreign(Language.ObjC)]
-	public static extern ObjC.ID OpenImplNative(string filename)
+	public static extern ObjC.ID OpenImpl(string filename)
 	@{
 		sqlite3 *sqlite3Database;
 		BOOL openDatabaseResult = sqlite3_open([filename UTF8String], &sqlite3Database);
 		return (::id)sqlite3Database;
 	@}
 
-	public static object OpenImpl(string filename) {
-		if (dbs.ContainsKey(filename)) {
-		   return filename;
-		}
-		var db = OpenImplNative(filename);
-		dbs.Add(filename, db);
-		return filename;
-	}
-
-	// TODO: Throw errors
 	[Foreign(Language.ObjC)]
-	public static extern void ExecImplNative(ObjC.ID db, string statement, string[] param)
+	public static extern void ExecImpl(ObjC.ID db, string statement, string[] param)
 	@{
 		sqlite3_stmt *compiledStatement;
 
         if (sqlite3_prepare_v2((sqlite3 *)db, [statement UTF8String], -1, &compiledStatement, NULL) != SQLITE_OK) {
-		    // NSLog(@"Prepare failure: %s", sqlite3_errmsg((sqlite3 *)db));
+		    NSLog(@"Prepare failure: %s", sqlite3_errmsg((sqlite3 *)db));
+		    @{ThrowException(string):Call([NSString stringWithUTF8String:sqlite3_errmsg((sqlite3 *)db)])};
 		}
 		for (int i=0; i<param.count; i++) {
 			if (sqlite3_bind_text(compiledStatement, i + 1, [param[i] UTF8String], -1, NULL) != SQLITE_OK) {
@@ -63,26 +52,15 @@ public extern(iOS) static class SQLiteImpl {
 		return;
 	@}
 
-	public static void ExecImpl(string handler, string statement, string[] param) {
-		var db = dbs[handler];
-		ExecImplNative(db, statement, param);
-	}
-
 	[Foreign(Language.ObjC)]
-	public static extern void CloseImplNative(ObjC.ID db)
+	public static extern void CloseImpl(ObjC.ID db)
 	@{
 		sqlite3_close((sqlite3 *)db);
 		return;
 	@}
 
-	public static void CloseImpl(string handler) {
-		var db = dbs[handler];
-		CloseImplNative(db);
-	}
-
-	// TODO: Throw errors
 	[Foreign(Language.ObjC)]
-	public static extern void QueryImplNative(FuseX.SQLite.ListDict result, ObjC.ID db, string statement, string[] param)
+	public static extern void QueryImpl(FuseX.SQLite.ListDict result, ObjC.ID db, string statement, string[] param)
 	@{
 		sqlite3_stmt *compiledStatement;
 		NSMutableArray *columnNames = [[NSMutableArray alloc] init];
@@ -136,8 +114,4 @@ public extern(iOS) static class SQLiteImpl {
 		[columnNames release];
 	@}
 
-	public static void QueryImpl(FuseX.SQLite.ListDict ld, string handler, string statement, string[] param) {
-		var db = dbs[handler];
-		QueryImplNative(ld, db, statement, param);
-	}
 }

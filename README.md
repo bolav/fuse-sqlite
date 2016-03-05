@@ -16,11 +16,11 @@ In UX:
 
 In JS:
 ```
-var db = require('SQLite');
-var h = db.open("file.sqlite");
-db.execute(h, "create table if not exists ids (id integer primary key)");
-db.execute(h, "insert into ids values (?)",2);
-var r = db.query(h, "select * from ids");
+var sqlite = require('SQLite');
+var db = sqlite.open("file.sqlite");
+db.execute("create table if not exists ids (id integer primary key)");
+db.execute("insert into ids values (?)",2);
+var r = db.query("select * from ids");
 debug_log(JSON.stringify(r));
 ```
 
@@ -32,12 +32,58 @@ It returns an array:
 ]
 ```
 
+API:
+----
+
+### require
+
+```
+var sqlite = require('SQLite');
+```
+
+### sqlite.open
+
+Opens a file that contains a SQLite database
+
+```
+var db = sqlite.open(filename);
+```
+
+### db.execute
+
+Executes a query. Does not return anything.
+
+```
+db.execute(sql_statement);
+db.execute(sql_statement, var1, var2, var3);
+```
+
+### db.query
+
+Executes a query. Returns an array of hashes with the result.
+
+```
+var result = db.query(sql_statement);
+var result = db.query(sql_statement, var1, var2, var3);
+```
+
+### db.close
+
+Closes the database.
+
+```
+db.close();
+```
+
+### Possible future functionality
+
+* Cursor support
+* Async support
+* Bundled pre-made databases
+
 ### Known Issues
 
-* No support for cursor
-* No support for CMake
-* No support for bundled pre-made databases
-* Error handling is unsupported, and different between the targets
+* Error messages is a bit different between the targets
 * Support for JavaScript and CMake Fuse targets is not planned.
 
 ### Windows

@@ -5,6 +5,7 @@
 		var result = Observable('');
 		var insert_id = Observable('');
 		var select_id = Observable('');
+		var prepare_id = Observable('');
 		var sqlite = require('SQLite');
 		var db = sqlite.open("file.sqlite");
 
@@ -36,6 +37,23 @@
 			debug_log(JSON.stringify(r));
 		}
 
+		function prepare_values () {
+			var r = '';
+			if (prepare_id.value != '') {
+				var stmnt = db.prepare("select * from ids WHERE id = ?")
+				r = stmnt.execute(prepare_id.value);
+			}
+			else {
+				console.log("select * from ids");
+				var stmnt = db.prepare("select * from ids");
+				r = stmnt.execute();
+			}
+			result.value = JSON.stringify(r);
+			debug_log(JSON.stringify(r));
+		}
+
+
+
 		init_db();
 
 		module.exports = {
@@ -43,8 +61,10 @@
 			init_db: init_db,
 			insert_value: insert_value,
 			select_values: select_values,
+			prepare_values: prepare_values,
 			insert_id: insert_id,
-			select_id: select_id
+			select_id: select_id,
+			prepare_id: prepare_id
 		}
 	</JavaScript>
 	<ClientPanel>
@@ -56,6 +76,11 @@
 				<TextInput Value="{select_id}" Width="200" />
 				<Button Text="Select" Clicked="{select_values}" />
 			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<TextInput Value="{prepare_id}" Width="200" />
+				<Button Text="Prepare" Clicked="{prepare_values}" />
+			</StackPanel>
+
 			<Text TextWrapping="Wrap" Value="{result}" />
 		</StackPanel>
 	</ClientPanel>

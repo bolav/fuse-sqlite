@@ -28,7 +28,14 @@ public class SQLiteDb : NativeModule
 	}
 
 	object Prepare(Context c, object[] args) {
-		return null;
+		var statement = args[0] as string;
+		var module = c.NewObject();
+		module["id"] = "SQLiteStatement";
+		module["exports"] = c.NewObject();
+
+		var mod = new SQLiteStatement(db, statement);
+		mod.Evaluate(c, module);
+		return module["exports"];
 	}
 
 	object Execute(Context c, object[] args) {
@@ -42,6 +49,9 @@ public class SQLiteDb : NativeModule
 		SQLiteImpl.ExecImpl(db, statement, param);
 		return null;
 	}
+
+	// TODO: QueryCursor
+	// TODO: QueryAsync
 
 	object Query(Context context, object[] args) {
 		var statement = args[0] as string;
