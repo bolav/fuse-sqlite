@@ -67,6 +67,15 @@ var result = db.query(sql_statement);
 var result = db.query(sql_statement, var1, var2, var3);
 ```
 
+### db.prepare
+
+Prepares a query. Returns a prepared statement.
+
+```
+var statement = db.prepare(sql_statement);
+statement.execute(var1,var2,var3);
+```
+
 ### db.close
 
 Closes the database.
