@@ -59,7 +59,7 @@ public class SQLiteDb : NativeModule
 
 		string[] param = new string[param_len];
 		for (var j=0; j < param_len; j++) {
-			param[j] = args[j+1] as string;
+			param[j] = args[j+1].ToString();
 		}
 		var jsld = new JSListDict(context);
 

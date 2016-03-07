@@ -11,7 +11,6 @@ using Mono.Data.Sqlite;
 
       public static string OpenImpl(string filename)
       {
-         Console.WriteLine(filename);
          if (dbs.ContainsKey(filename)) {
             return filename;
          }
