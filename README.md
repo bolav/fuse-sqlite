@@ -99,3 +99,12 @@ db.close();
 
 * The sqlite3.dll is downloaded from http://www.sqlite.org/download.html
 * Mono.Data.Sqlite.dll is included from Mono.
+
+### Errors:
+
+* `Failed to load assembly . . . have caused the assembly to be sandboxed . . .`
+
+You need to Unblock dll's that you downloaded.
+
+* https://navbis.wordpress.com/2014/03/17/what-to-do-if-the-dll-assemblies-are-blocked-by-windows/
+* http://superuser.com/questions/38476/this-file-came-from-another-computer-how-can-i-unblock-all-the-files-in-a

@@ -50,7 +50,6 @@ using Mono.Data.Sqlite;
       }
 
       public static void ExecImpl(string handler, string statement, string[] param) {
-         Console.WriteLine("ExecImpl " + statement);
          var db = dbs[handler];
          var dbcmd = new SqliteCommand(ConvertStatment(statement), db);
 
@@ -64,7 +63,6 @@ using Mono.Data.Sqlite;
 
       public static List<Dictionary<string,string>> QueryImpl(string handler, string statement, string[] param) {
       	List<Dictionary<string,string>> result = new List<Dictionary<string,string>>();
-         Console.WriteLine("QueryImpl " + statement);
          var db = dbs[handler];
          var dbcmd = new SqliteCommand(ConvertStatment(statement), db);
 
