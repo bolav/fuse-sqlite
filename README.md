@@ -10,6 +10,15 @@ Currently supports iOS, Android and CIL (Fuse Preview)
 Issues, feature request and pull request are welcomed.
 
 ### Usage:
+
+In your unoproj:
+
+```
+"Projects": [
+    "../fuse-sqlite/include.unoproj"
+  ],
+```
+
 In UX:
 
 `<SQLite ux:Global="SQLite" />`
@@ -47,6 +56,25 @@ Opens a file that contains a SQLite database
 
 ```
 var db = sqlite.open(filename);
+```
+
+### sqlite.openFromBundle
+
+Opens a file that contains a SQLite database, possibly from the bundle
+
+```
+var db = sqlite.openFromBundle(filename);
+```
+
+And in the `unoproj`:
+
+```
+"Includes": [
+  "*.uno",
+  "*.uxl",
+  "*.ux",
+  "bundle.sqlite:Bundle"
+]
 ```
 
 ### db.execute
@@ -104,7 +132,7 @@ db.close();
 
 * `Failed to load assembly . . . have caused the assembly to be sandboxed . . .`
 
-You need to Unblock dll's that you downloaded.
+    You need to Unblock dll's that you downloaded.
 
-* https://navbis.wordpress.com/2014/03/17/what-to-do-if-the-dll-assemblies-are-blocked-by-windows/
-* http://superuser.com/questions/38476/this-file-came-from-another-computer-how-can-i-unblock-all-the-files-in-a
+    * https://navbis.wordpress.com/2014/03/17/what-to-do-if-the-dll-assemblies-are-blocked-by-windows/
+    * http://superuser.com/questions/38476/this-file-came-from-another-computer-how-can-i-unblock-all-the-files-in-a
