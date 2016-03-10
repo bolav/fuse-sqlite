@@ -1,5 +1,4 @@
 using Fuse;
-using Fuse.Controls;
 using Fuse.Scripting;
 using Fuse.Reactive;
 using ObjC;
@@ -8,7 +7,6 @@ using Uno;
 using Uno.Collections;
 
 using Uno.Compiler.ExportTargetInterop;
-using iOS.Foundation;
 // http://www.appcoda.com/sqlite-database-ios-app-tutorial/
 
 [TargetSpecificImplementation]

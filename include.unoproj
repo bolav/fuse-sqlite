@@ -6,14 +6,10 @@
         "Fuse.Scripting",
         "FuseCore",
         "Uno.Collections",
-        "ObjC",
-        "Fuse.Android",
-        "Fuse.Desktop",
-        "Fuse.iOS"
+        "ObjC"
   ],
   "Includes": [
     "*.uno",
-    "*.uxl",
-    "MainView.ux"
+    "*.uxl"
   ]
 }

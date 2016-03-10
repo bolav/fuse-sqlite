@@ -1,9 +1,7 @@
 using Fuse;
-using Fuse.Controls;
 
 using Uno.Compiler.ExportTargetInterop;
 using Uno.Collections;
-using Android.android.database.sqlite;
 
 // http://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html
 [TargetSpecificImplementation]
