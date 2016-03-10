@@ -7,7 +7,6 @@
         "Fuse.Gestures",
         "Fuse.Reactive",
         "Fuse.Scripting",
-        "Fuse.Elements",
         "FuseCore",
         "Uno.Collections",
         "ObjC",
@@ -18,7 +17,6 @@
   "Includes": [
     "*.uno",
     "*.uxl",
-    "MainView.ux",
-    "bundle.sqlite:Bundle"
+    "UnitTest.ux"
   ]
 }

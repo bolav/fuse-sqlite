@@ -1,0 +1,35 @@
+<App Theme="Basic">
+	<SQLite ux:Global="SQLite" />
+	<JavaScript>
+		var sqlite = require('SQLite');
+		var db = sqlite.open("file.sqlite");
+
+		function init_db () {
+			db.execute("create table if not exists ids (id integer primary key)");
+		}
+
+		function insert_loop () {
+			// This crashes on Android 0.10.1
+			// This also crashes on Fuse OSX Preview 0.10.1 when run twice
+			for (var i = 0; i < 300; i++) {
+				try {
+					db.execute("insert into ids values (?)", i);
+				}
+				catch (e) {
+					debug_log("Error with insert " + i);
+				}
+			}
+		}
+		init_db();
+
+		module.exports = {
+			test_1: insert_loop
+		}
+	</JavaScript>
+	<ClientPanel>
+		<StackPanel>
+			<Button Text="Insert Loop" Clicked="{test_1}" />
+		</StackPanel>
+	</ClientPanel>
+</App>
+

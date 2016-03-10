@@ -7,7 +7,10 @@
 		var select_id = Observable('');
 		var prepare_id = Observable('');
 		var sqlite = require('SQLite');
-		var db = sqlite.open("file.sqlite");
+		// var db = sqlite.open("file.sqlite");
+		// init_db();
+		var db = sqlite.openFromBundle('bundle.sqlite');
+
 
 		function init_db () {
 			db.execute("create table if not exists ids (id integer primary key)");
@@ -51,10 +54,6 @@
 			result.value = JSON.stringify(r);
 			debug_log(JSON.stringify(r));
 		}
-
-
-
-		init_db();
 
 		module.exports = {
 			result: result,
