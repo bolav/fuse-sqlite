@@ -20,15 +20,40 @@
 				}
 			}
 		}
+
+		var db_2;
+		function open_1 () {
+			if (db_2) {
+				debug_log("Closing");
+				db_2.close();
+			}
+			debug_log("Open bundle_2");
+			db_2 = sqlite.openFromBundle('bundle_2.sqlite');
+			debug_log(JSON.stringify(db_2.query("SELECT * FROM ids WHERE id < 10")));
+		}
+		function open_2 () {
+			if (db_2) {
+				debug_log("Closing");
+				db_2.close();
+			}
+			debug_log("Open bundle_3");
+			db_2 = sqlite.openFromBundle('bundle_3.sqlite');
+			debug_log(JSON.stringify(db_2.query("SELECT * FROM ids WHERE id < 10")));
+		}
+
 		init_db();
 
 		module.exports = {
-			test_1: insert_loop
+			test_1: insert_loop,
+			test_2: open_1,
+			test_3: open_2
 		}
 	</JavaScript>
 	<ClientPanel>
 		<StackPanel>
 			<Button Text="Insert Loop" Clicked="{test_1}" />
+			<Button Text="Open 1" Clicked="{test_2}" />
+			<Button Text="Open 2" Clicked="{test_3}" />
 		</StackPanel>
 	</ClientPanel>
 </App>

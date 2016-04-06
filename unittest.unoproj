@@ -17,6 +17,8 @@
   "Includes": [
     "*.uno",
     "*.uxl",
-    "UnitTest.ux"
+    "UnitTest.ux",
+    "bundle_2.sqlite:Bundle",
+    "bundle_3.sqlite:Bundle"
   ]
 }

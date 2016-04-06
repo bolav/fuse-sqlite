@@ -15,7 +15,7 @@ In your unoproj:
 
 ```
 "Projects": [
-    "../fuse-sqlite/include.unoproj"
+    "../fuse-sqlite/sqlite_include.unoproj"
   ],
 ```
 
