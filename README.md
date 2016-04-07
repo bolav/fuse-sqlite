@@ -9,21 +9,20 @@ Currently supports iOS, Android and CIL (Fuse Preview)
 
 Issues, feature request and pull request are welcomed.
 
-### Usage:
+## Installation
 
-In your unoproj:
+    $ fusepm install https://github.com/bolav/fuse-sqlite
 
-```
-"Projects": [
-    "../fuse-sqlite/sqlite_include.unoproj"
-  ],
-```
 
-In UX:
+## Usage:
+
+### UX
 
 `<SQLite ux:Global="SQLite" />`
 
-In JS:
+
+### JS
+
 ```
 var sqlite = require('SQLite');
 var db = sqlite.open("file.sqlite");
@@ -41,7 +40,7 @@ It returns an array:
 ]
 ```
 
-API:
+API
 ----
 
 ### require
