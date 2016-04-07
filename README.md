@@ -11,6 +11,8 @@ Issues, feature request and pull request are welcomed.
 
 ## Installation
 
+Using [fusepm](https://github.com/bolav/fusepm)
+
     $ fusepm install https://github.com/bolav/fuse-sqlite
 
 
