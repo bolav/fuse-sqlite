@@ -11,6 +11,7 @@ public class SQLiteDb : NativeModule
 	extern (CIL) string db;
 	extern (iOS) ObjC.ID db;
 	extern (Android) Java.Object db;
+	extern (Uno) int db;
 	public SQLiteDb(string filename) {
 		this.filename = filename;
 		db = SQLiteImpl.OpenImpl(filename);
