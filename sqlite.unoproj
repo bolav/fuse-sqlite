@@ -19,6 +19,9 @@
     "*.uno",
     "*.uxl",
     "MainView.ux",
-    "bundle.sqlite:Bundle"
+    "bundle.sqlite:Bundle",
+    "SQLiteImpl.CIL.dll:File",
+    "sqlite3.dll:File",
+    "Mono.Data.Sqlite.dll:File"
   ]
 }
