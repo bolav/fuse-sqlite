@@ -1,6 +1,7 @@
 using Uno.Collections;
 using Uno.Compiler.ExportTargetInterop;
 
+[DotNetType(null)]
 [TargetSpecificImplementation]
 public extern(CIL) static class SQLiteImpl {
 
