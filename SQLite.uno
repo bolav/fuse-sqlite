@@ -15,16 +15,13 @@ public class SQLite : NativeModule {
 	}
 
 
-	int _db_count = 0;
 	object Open (Context c, object[] args)
 	{
 		var filename = args[0] as string;
 		var filepath = Path.Combine(Directory.GetUserDirectory(UserDirectory.Data), filename);
 
 		var db = new SQLiteDb(filepath);
-
-		_db_count = _db_count + 1;
-		return db.EvaluateExports(c, "SQLiteDb" + _db_count);
+		return db.EvaluateExports(c, null);
 	}
 
 	object OpenFromBundle (Context c, object[] args)
