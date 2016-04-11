@@ -28,15 +28,12 @@ public class SQLiteDb : NativeModule
 		return null;
 	}
 
+	int _st_count = 0;
 	object Prepare(Context c, object[] args) {
 		var statement = args[0] as string;
-		var module = c.NewObject();
-		module["id"] = "SQLiteStatement";
-		module["exports"] = c.NewObject();
-
 		var mod = new SQLiteStatement(db, statement);
-		mod.Evaluate(c, module);
-		return module["exports"];
+		_st_count = _st_count + 1;
+		return mod.EvaluateExports(c, "SQLiteStatement"+_st_count);
 	}
 
 	object Execute(Context c, object[] args) {
