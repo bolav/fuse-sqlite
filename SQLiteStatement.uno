@@ -3,7 +3,7 @@ using Uno.Collections;
 using Fuse;
 using Fuse.Scripting;
 using Fuse.Reactive;
-using FuseX.SQLite;
+using Bolav.ForeignHelpers;
 
 public class SQLiteStatement : NativeModule
 {
@@ -45,26 +45,26 @@ public class SQLiteStatement : NativeModule
 		for (var j=0; j < param_len; j++) {
 			param[j] = args[j] as string;
 		}
-		var jsld = new JSListDict(context);
+		var jslist = new JSList(context);
 
 		if defined(!CIL) {
-			SQLiteImpl.QueryImpl(jsld, db, statement, param);
+			SQLiteImpl.QueryImpl(jslist, db, statement, param);
 		}
 
 		if defined(CIL) {
 			var result = SQLiteImpl.QueryImpl(db, statement, param);
 			int i = 0;
 			foreach (var row in result) {
-				jsld.NewRowSetActive();
+				var jsdict = jslist.NewDictRow();
 				foreach (var pair in row) {
 					string key = pair.Key as string;
 					string val = pair.Value as string;
-					jsld.SetRow_Column(key,val);
+					jsdict.SetKeyVal(key,val);
 				}
 				i++;
 			}
 		}
-		return jsld.GetScriptingArray();
+		return jslist.GetScriptingArray();
 	}
 
 }

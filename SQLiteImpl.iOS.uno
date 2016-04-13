@@ -7,8 +7,11 @@ using Uno;
 using Uno.Collections;
 
 using Uno.Compiler.ExportTargetInterop;
+using Bolav.ForeignHelpers;
+
 // http://www.appcoda.com/sqlite-database-ios-app-tutorial/
 
+[Require("Source.Include", "@{ForeignDict:Include}")]
 [TargetSpecificImplementation]
 public extern(iOS) static class SQLiteImpl {
 
@@ -58,7 +61,7 @@ public extern(iOS) static class SQLiteImpl {
 	@}
 
 	[Foreign(Language.ObjC)]
-	public static extern void QueryImpl(FuseX.SQLite.ListDict result, ObjC.ID db, string statement, string[] param)
+	public static extern void QueryImpl(ForeignList result, ObjC.ID db, string statement, string[] param)
 	@{
 		sqlite3_stmt *compiledStatement;
 		NSMutableArray *columnNames = [[NSMutableArray alloc] init];
@@ -79,7 +82,7 @@ public extern(iOS) static class SQLiteImpl {
 		int sqlite_ret;
 		while((sqlite_ret = sqlite3_step(compiledStatement)) == SQLITE_ROW) {
 			// Initialize the mutable array that will contain the data of a fetched row.
-			@{FuseX.SQLite.ListDict:Of(result).NewRowSetActive():Call()};
+			id<UnoObject> row = @{ForeignList:Of(result).NewDictRow():Call()};
 
 		    // Get the total number of columns.
 		    int totalColumns = sqlite3_column_count(compiledStatement);
@@ -99,7 +102,7 @@ public extern(iOS) static class SQLiteImpl {
 		        // If there are contents in the currenct column (field) then add them to the current row array.
 		        if (dbDataAsChars != NULL) {
 		            // Convert the characters to string.
-		            @{FuseX.SQLite.ListDict:Of(result).SetRow_Column(string,string):Call([columnNames objectAtIndex:i], [NSString stringWithUTF8String:dbDataAsChars])};
+			        @{ForeignDict:Of(row).SetKeyVal(string,string):Call([columnNames objectAtIndex:i], [NSString stringWithUTF8String:dbDataAsChars])};
 		        }
 
 		    }
