@@ -1,2 +1,6 @@
 .build
 .cache
+.uno
+fuse_modules/
+build
+.DS_Store
