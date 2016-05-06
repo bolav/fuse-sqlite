@@ -22,9 +22,9 @@ cache:
 
 
 before_install:
-  # - ./.travis/install-ndk.sh
-  # - ./.travis/install-fuse.sh
-  # - ./.travis/install-fuseandroid.sh
+  - ./.travis/install-ndk.sh
+  - ./.travis/install-fuse.sh
+  - ./.travis/install-fuseandroid.sh
   - ./.travis/install-fusepm.sh
 
 # http://stackoverflow.com/questions/27671854/travis-ci-fails-to-build-with-a-code-signing-error
