@@ -7,6 +7,7 @@ language:
   - fuse
   - objective-c
   - android
+  - node_js
 os:
   - osx
 sudo: required
@@ -14,6 +15,7 @@ sudo: required
 before_install:
   - ./.travis/install-ndk.sh
   - ./.travis/install-fuse.sh
+  - ./.travis/install-fusepm.sh
 
 # http://stackoverflow.com/questions/27671854/travis-ci-fails-to-build-with-a-code-signing-error
 # before_script:
