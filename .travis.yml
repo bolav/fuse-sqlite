@@ -29,7 +29,7 @@ before_install:
 
 # http://stackoverflow.com/questions/27671854/travis-ci-fails-to-build-with-a-code-signing-error
 before_script:
-    - fusepm install
+    - fusepm install --unoproj ${UNOPROJ}.unoproj
 #     - ./.travis/add-key.sh
 
 script:
