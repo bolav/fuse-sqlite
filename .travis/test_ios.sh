@@ -2,16 +2,6 @@
 
 name=${UNOPROJ}
 status=0
-echo travis_fold:start:uno
-uno build ${UNOPROJ}.unoproj -v
-exitcode=$?
-echo travis_fold:end:uno
-if [ $exitcode -ne 0 ]; then
-	echo "uno $name - FAIL"
-	status=$exitcode
-else
-	echo "uno $name - PASS"
-fi
 echo travis_fold:start:ios
 uno build -tiOS ${UNOPROJ}.unoproj -v -N
 exitcode=$?
@@ -31,15 +21,5 @@ if [ $exitcode2 -ne 0 ]; then
 	status=$exitcode2
 else
 	echo "uno ios xcodebuild $name - PASS"
-fi
-echo travis_fold:start:android
-uno build -tAndroid ${UNOPROJ}.unoproj -v
-exitcode=$?
-echo travis_fold:end:android
-if [ $exitcode -ne 0 ]; then
-	echo "uno android $name - FAIL"
-	status=$exitcode
-else
-	echo "uno android $name - PASS"
 fi
 exit $status

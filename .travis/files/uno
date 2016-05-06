@@ -1,0 +1,4 @@
+#!/bin/sh
+export DYLD_FALLBACK_LIBRARY_PATH=/usr/share/uno:/Applications/Fuse.app/Contents/Mono/lib:/Library/Frameworks/Mono.framework/Versions/Current/lib:/usr/lib
+export FONTCONFIG_FILE=/Applications/Fuse.app/Contents/Mono/etc/fonts.conf
+exec /Applications/Fuse.app/Contents/Mono/bin/mono --gc=sgen /Applications/Fuse.app/Contents/Uno/uno.exe "$@"
