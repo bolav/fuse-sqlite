@@ -11,8 +11,6 @@ language:
 os:
   - osx
 sudo: required
-node_js:
-  - '5'
 
 cache:
   directories:
