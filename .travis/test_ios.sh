@@ -1,6 +1,6 @@
 #!/bin/sh
 
-name=${UNOPROJ}
+name=${NAME:-$UNOPROJ}
 status=0
 echo travis_fold:start:ios
 uno build -tiOS ${UNOPROJ}.unoproj -v -N

@@ -3,6 +3,7 @@ env:
     - NDK_VERSION=r10e
     - FUSE_VERSION=0.12.3.6348
     - UNOPROJ=sqlite_example
+    - NAME=FuseSQLiteLib
 language: 
   - fuse
   - objective-c
@@ -27,9 +28,9 @@ before_install:
   - ./.travis/install-fuseandroid.sh
   - ./.travis/install-fusepm.sh
 
-# http://stackoverflow.com/questions/27671854/travis-ci-fails-to-build-with-a-code-signing-error
 before_script:
     - fusepm install --unoproj ${UNOPROJ}.unoproj
+# http://stackoverflow.com/questions/27671854/travis-ci-fails-to-build-with-a-code-signing-error
 #     - ./.travis/add-key.sh
 
 script:

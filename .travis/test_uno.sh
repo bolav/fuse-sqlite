@@ -1,6 +1,7 @@
 #!/bin/sh
 
-name=${UNOPROJ}
+name=${NAME:-$UNOPROJ}
+echo travis_fold:start:uno
 uno build ${UNOPROJ}.unoproj -v
 exitcode=$?
 echo travis_fold:end:uno

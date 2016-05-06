@@ -1,6 +1,6 @@
 #!/bin/sh
 
-name=${UNOPROJ}
+name=${NAME:-$UNOPROJ}
 echo travis_fold:start:android
 uno build -tAndroid ${UNOPROJ}.unoproj -v
 exitcode=$?
