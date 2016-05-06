@@ -2,7 +2,6 @@
 
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
 	brew update
-	brew unlink node
-	brew install node
+	brew outdated node || brew upgrade node
 	npm install -g fusepm
 fi
