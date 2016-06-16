@@ -2,11 +2,8 @@
   "Name":"FuseSQLiteLib",
   "RootNamespace":"",
   "Packages": [
-        "Fuse.Reactive",
-        "Fuse.Scripting",
-        "FuseCore",
-        "Uno.Collections",
-        "ObjC"
+    "Fuse",
+    "FuseJS"
   ],
   "Includes": [
     "*.uno",

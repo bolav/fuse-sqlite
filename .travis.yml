@@ -1,7 +1,7 @@
 env:
   global:
     - NDK_VERSION=r10e
-    - FUSE_VERSION=0.12.3.6348
+    - FUSE_VERSION=0.20.3.6549
     - UNOPROJ=sqlite_example
     - NAME=FuseSQLiteLib
 language: 
