@@ -8,5 +8,5 @@
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
 	# In /Users/travis/build/bolav/fuse-travis
 	echo "Installing Fuse Android"
-	fuse install android < ./.travis/sdkinstall.txt
+	(echo; while true; do echo y; done) | fuse install android
 fi
