@@ -1,4 +1,4 @@
-Fuse SQLite bindings [![Build Status](https://travis-ci.org/bolav/fuse-sqlite.svg?branch=master)](https://travis-ci.org/bolav/fuse-sqlite)
+Fuse SQLite bindings [![Build Status](https://travis-ci.org/bolav/fuse-sqlite.svg?branch=master)](https://travis-ci.org/bolav/fuse-sqlite) ![Fuse Version](https://fuse-version.herokuapp.com/?repo=https://github.com/bolav/fuse-sqlite)
 ====================
 
 Library to use [SQLite](https://www.sqlite.org/) in [Fuse](http://www.fusetools.com/).
