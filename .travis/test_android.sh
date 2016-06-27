@@ -2,7 +2,7 @@
 
 name=${NAME:-$UNOPROJ}
 echo travis_fold:start:android
-uno build -tAndroid ${UNOPROJ}.unoproj -v
+uno build -tAndroid -DGRADLE ${UNOPROJ}.unoproj -v
 exitcode=$?
 echo travis_fold:end:android
 if [ $exitcode -ne 0 ]; then
