@@ -104,6 +104,9 @@ public extern(iOS) static class SQLiteImpl {
 		            // Convert the characters to string.
 			        @{ForeignDict:Of(row).SetKeyVal(string,string):Call([columnNames objectAtIndex:i], [NSString stringWithUTF8String:dbDataAsChars])};
 		        }
+		        else {
+		        	@{ForeignDict:Of(row).SetKeyVal(string,string):Call([columnNames objectAtIndex:i], nil)};
+		        }
 
 		    }
 		}
