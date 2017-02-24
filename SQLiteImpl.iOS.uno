@@ -23,15 +23,15 @@ public extern(iOS) static class SQLiteImpl {
 	[Require("Source.Include", "sqlite3.h")]
 	[Require("LinkLibrary", "sqlite3")]
 	[Foreign(Language.ObjC)]
-	public static extern ObjC.ID OpenImpl(string filename)
+	public static extern IntPtr OpenImpl(string filename)
 	@{
 		sqlite3 *sqlite3Database;
 		BOOL openDatabaseResult = sqlite3_open([filename UTF8String], &sqlite3Database);
-		return (::id)sqlite3Database;
+		return sqlite3Database;
 	@}
 
 	[Foreign(Language.ObjC)]
-	public static extern void ExecImpl(ObjC.ID db, string statement, string[] param)
+	public static extern void ExecImpl(IntPtr db, string statement, string[] param)
 	@{
 		sqlite3_stmt *compiledStatement;
 
@@ -54,14 +54,14 @@ public extern(iOS) static class SQLiteImpl {
 	@}
 
 	[Foreign(Language.ObjC)]
-	public static extern void CloseImpl(ObjC.ID db)
+	public static extern void CloseImpl(IntPtr db)
 	@{
 		sqlite3_close((sqlite3 *)db);
 		return;
 	@}
 
 	[Foreign(Language.ObjC)]
-	public static extern void QueryImpl(ForeignList result, ObjC.ID db, string statement, string[] param)
+	public static extern void QueryImpl(ForeignList result, IntPtr db, string statement, string[] param)
 	@{
 		sqlite3_stmt *compiledStatement;
 		NSMutableArray *columnNames = [[NSMutableArray alloc] init];
@@ -114,8 +114,6 @@ public extern(iOS) static class SQLiteImpl {
 		    NSLog(@"sqlite_ret: %d", sqlite_ret);
 		    @{ThrowException(string):Call([NSString stringWithUTF8String:sqlite3_errmsg((sqlite3 *)db)])};
 		}
-
-		[columnNames release];
 	@}
 
 }

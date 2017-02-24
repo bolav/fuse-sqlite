@@ -15,7 +15,7 @@ public class SQLiteStatement : NativeModule
 	}
 
 	extern (CIL) string db;
-	extern (iOS) ObjC.ID db;
+	extern (iOS) IntPtr db;
 	extern (Android) Java.Object db;
 	extern (Uno) int db;
 
@@ -28,7 +28,7 @@ public class SQLiteStatement : NativeModule
 		db = database;
 	}
 
-	public extern(iOS) SQLiteStatement(ObjC.ID database, string statement) : this(statement) {
+	public extern(iOS) SQLiteStatement(IntPtr database, string statement) : this(statement) {
 		db = database;
 	}
 

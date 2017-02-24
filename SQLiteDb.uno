@@ -9,7 +9,7 @@ public class SQLiteDb : NativeModule
 {
 	string filename;
 	extern (CIL) string db;
-	extern (iOS) ObjC.ID db;
+	extern (iOS) IntPtr db;
 	extern (Android) Java.Object db;
 	extern (Uno) int db;
 	public SQLiteDb(string filename) {
