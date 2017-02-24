@@ -19,5 +19,11 @@
     "Dependencies": [
       "https://github.com/bolav/fuse-foreignhelpers"
     ]
-  }
+  },
+  "Projects": [
+    "fuse_modules/bolav/fuse-foreignhelpers/foreignhelpers_include.unoproj"
+  ],
+  "Excludes": [
+    "fuse_modules/"
+  ]
 }

@@ -7,19 +7,19 @@
 		var select_id = Observable('');
 		var prepare_id = Observable('');
 		var sqlite = require('SQLite');
-		// var db = sqlite.open("file.sqlite");
-		// init_db();
-		var db = sqlite.openFromBundle('bundle.sqlite');
+		var db = sqlite.open("file.sqlite");
+		init_db();
+		// var db = sqlite.openFromBundle('bundle.sqlite');
 
 
 		function init_db () {
-			db.execute("create table if not exists ids (id integer primary key)");
+			db.execute("create table if not exists ids (id INTEGER PRIMARY KEY   AUTOINCREMENT)");
 		}
 
 		function insert_value () {
 			try {
-				db.execute("insert into ids values (?)", insert_id.value);
-				result.value="Insert successful";
+				db.execute("insert into ids values (NULL)");
+				result.value="Insert successful : " + db.lastrowid();
 			}
 			catch (e) {
 				result.value = "Error inserting " + e;

@@ -20,6 +20,7 @@ public class SQLiteDb : NativeModule
 		AddMember(new NativeFunction("prepare", (NativeCallback)Prepare));
 		AddMember(new NativeFunction("execute", (NativeCallback)Execute));
 		AddMember(new NativeFunction("query", (NativeCallback)Query));
+		AddMember(new NativeFunction("lastrowid", (NativeCallback)LastRowId));
 	}
 
 	object Close(Context c, object[] args)
@@ -77,6 +78,10 @@ public class SQLiteDb : NativeModule
 			}
 		}
 		return jslist.GetScriptingArray();
+	}
+
+	object LastRowId(Context context, object[] args) {
+		return SQLiteImpl.LastRowIdImpl(db);
 	}
 
 }

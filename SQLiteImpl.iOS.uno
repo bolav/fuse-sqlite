@@ -61,6 +61,12 @@ public extern(iOS) static class SQLiteImpl {
 	@}
 
 	[Foreign(Language.ObjC)]
+	public static extern int LastRowIdImpl(IntPtr db)
+	@{
+		return sqlite3_last_insert_rowid((sqlite3 *)db);
+	@}
+
+	[Foreign(Language.ObjC)]
 	public static extern void QueryImpl(ForeignList result, IntPtr db, string statement, string[] param)
 	@{
 		sqlite3_stmt *compiledStatement;
