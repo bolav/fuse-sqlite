@@ -1,3 +1,5 @@
+using Uno;
+using Uno.UX;
 using Fuse;
 using Fuse.Scripting;
 using Fuse.Reactive;
@@ -6,10 +8,16 @@ using Bolav.ForeignHelpers;
 
 // Version: 0.03
 // https://github.com/bolav/fuse-sqlite
+[UXGlobalModule]
 public class SQLite : NativeModule {
+
+	static readonly SQLite _instance;
 
 	public SQLite()
 	{
+        if (_instance != null) return;
+        Uno.UX.Resource.SetGlobalKey(_instance = this, "SQLite");
+        
 		AddMember(new NativeFunction("open", (NativeCallback)Open));
 		AddMember(new NativeFunction("openFromBundle", (NativeCallback)OpenFromBundle));
 	}
