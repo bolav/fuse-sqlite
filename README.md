@@ -18,11 +18,6 @@ Using [fusepm](https://github.com/bolav/fusepm)
 
 ## Usage:
 
-### UX
-
-`<SQLite ux:Global="SQLite" />`
-
-
 ### JS
 
 ```
